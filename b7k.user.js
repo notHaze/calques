@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name Place B7K V2
 // @namespace https://github.com/notHaze/calques
-// @version 0.1
+// @version 0.2
 // @description Go détruire du grec
 // @author Martine
 // @match https://*/*
@@ -16,7 +16,7 @@
 const DEBUG = false;
 
 const UPDATE_URL = GM_info.script.updateURL;
-const OVERLAY_URL = "https://github.com/notHaze/calques/raw/main/overlay.png";
+const OVERLAY_URL = "https://github.com/notHaze/calques/raw/main/overlaytest.png";
 const VERSION_URL = "https://raw.githubusercontent.com/notHaze/calques/main/version.json";
 
 const allowedLangs = ['fr', 'en'];
@@ -25,7 +25,7 @@ const defaultOpts = {
     OVERLAY_OPACITY:  1,
     ENABLE_AUTOREFRESH: false,
     AUTOREFRESH_DELAY: 5000,
-    REPLACE_DELAY: 1000,
+    REPLACE_DELAY: 2000,
     ENABLE_IMGNOCACHE: true,
     VERSION: GM_info.script.version,
     LANG: allowedLangs[0]
@@ -188,9 +188,7 @@ const showUpdate = (version) => {
                 overlay.src = overlayURL();
             }
             const updateOverlayPosition = () => {
-                console.log("Reset position of overlay");
                 let over = document.getElementById("place");
-                console.log(over.transform);
                 overlay.style.transform = over.style.transform;
                 overlay.style.transformOrigin = over.style.transformOrigin;
             }
