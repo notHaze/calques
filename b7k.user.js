@@ -4,7 +4,7 @@
 // @version 0.3
 // @description Go détruire du grec
 // @author Martine
-// @match https://*/*
+// @match https://place.inpt.fr/*
 // @icon https://github.com/notHaze/calques/raw/main/logos/b7k%20titre%20court.png
 // @grant none
 // @downloadURL  https://raw.githubusercontent.com/notHaze/calques/main/b7k.user.js
