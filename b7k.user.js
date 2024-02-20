@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name Place B7K V2
+// @name Place B7K
 // @namespace https://github.com/notHaze/calques
 // @version 0.3
 // @description Go détruire du grec
