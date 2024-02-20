@@ -16,7 +16,7 @@
 const DEBUG = false;
 
 const UPDATE_URL = GM_info.script.updateURL;
-const OVERLAY_URL = "https://github.com/notHaze/calques/raw/main/b7k-50x50.png";
+const OVERLAY_URL = "https://github.com/notHaze/calques/raw/main/overlay.png";
 const VERSION_URL = "https://raw.githubusercontent.com/notHaze/calques/main/version.json";
 
 const allowedLangs = ['fr', 'en'];
