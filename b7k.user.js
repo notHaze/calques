@@ -16,9 +16,8 @@
 const DEBUG = false;
 
 const UPDATE_URL = GM_info.script.updateURL;
-const OVERLAY_URL = "https://github.com/notHaze/calques/raw/main/b7k-25x25.png";
+const OVERLAY_URL = "https://github.com/notHaze/calques/raw/main/b7k-50x50.png";
 const VERSION_URL = "https://raw.githubusercontent.com/notHaze/calques/main/version.json";
-const TAILLE = 25;
 
 const allowedLangs = ['fr', 'en'];
 const defaultOpts = {
@@ -26,6 +25,7 @@ const defaultOpts = {
     OVERLAY_OPACITY:  1,
     ENABLE_AUTOREFRESH: false,
     AUTOREFRESH_DELAY: 5000,
+    REPLACE_DELAY: 1000,
     ENABLE_IMGNOCACHE: true,
     VERSION: GM_info.script.version,
     LANG: allowedLangs[0]
@@ -160,8 +160,10 @@ const showUpdate = (version) => {
 
 (async function() {
     console.log("Loading B7K overlay module");
-
-    if (window.top !== window.self) {
+    console.log(window.top);
+    console.log(window.self);
+    console.log(window.top !== window.self);
+    if (true) {
         const overlayURL = () => OVERLAY_URL+(opts.ENABLE_IMGNOCACHE ? "?t="+new Date().getTime() : "");
         console.log({opts});
 
@@ -172,7 +174,7 @@ const showUpdate = (version) => {
             console.log("Found embed");
 
             console.log("Searching canvas");
-            let canvas = embed.shadowRoot.children[5].getElementById("place");
+            let canvas = document.getElementById("place");
             if ("undefined" === typeof canvas || canvas.length < 1) return;
             console.log("Found canvas");
 
@@ -185,12 +187,20 @@ const showUpdate = (version) => {
             const updateOverlaySrc = () => {
                 overlay.src = overlayURL();
             }
+            const updateOverlayPosition = () => {
+                console.log("Reset position of overlay");
+                let over = document.getElementById("place");
+                console.log(over.transform);
+                overlay.style.transform = over.style.transform;
+                overlay.style.transformOrigin = over.style.transformOrigin;
+            }
             const overlayAutoRefresh = () => {
                 timer = setInterval(() => {
                     console.log("Autorefresh done");
                     updateOverlaySrc();
                 }, opts.AUTOREFRESH_DELAY);
             }
+
             const showOverlay = () => {
                 console.log("Reloading overlay");
 
@@ -198,13 +208,14 @@ const showUpdate = (version) => {
                 overlay.src = overlayURL();
 
                 overlay.style.position = "absolute";
+                overlay.style.pointerEvents = "none";
                 overlay.style.left = 0;
                 overlay.style.top = 0;
                 overlay.style.imageRendering = "pixelated";
-                overlay.style.width = TAILLE+"px";
-                overlay.style.height = TAILLE+"px";
+                overlay.style.width = "100%";
                 overlay.style.opacity = + opts.OVERLAY_STATE;
-                canvasContainer[0].parentNode.appendChild(overlay);
+                overlay.id = "B7k-overlay";
+                canvas.parentNode.appendChild(overlay);
                 console.log("Overlay reloaded");
             }
 
@@ -304,6 +315,7 @@ const showUpdate = (version) => {
                     btn.classList.toggle("disable");
                 }
 
+
                 const toggleNocacheBtn = document.createElement("button");
                 toggleNocacheBtn.innerHTML = toggleNocacheBtnText();
                 defaultStyle(toggleNocacheBtn);
@@ -342,39 +354,17 @@ const showUpdate = (version) => {
                 sliderBlock.appendChild(sliderText);
                 sliderBlock.appendChild(slider);
 
+                let timer2;
+                timer2 = setInterval(() => {
+
+                    updateOverlayPosition();
+                }, opts.REPLACE_DELAY);
+
                 slider.addEventListener("input", (event) => handleSlider(event));
 
-                const langDiv = document.createElement("div");
-                defaultBlock(langDiv);
-                for(let lang of allowedLangs){
-                    const langSpan = document.createElement("span");
-                    langSpan.innerHTML = lang
-                    langSpan.style.cursor = "pointer";
-                    langSpan.style.padding = "10px";
-                    langSpan.style.margin = "0 5px";
-                    langSpan.style.border = "1px solid rgba(0,0,0,0.3)";
-                    langSpan.style.borderRadius = "5px";
-                    langSpan.style.background = "white";
-                    langSpan.style.color = "black";
-                    langSpan.style.textTransform = "uppercase";
-                    langSpan.id = lang
-                    if(opts.LANG === lang) {
-                        langSpan.style.backgroundColor = "#c3c3c3";
-                        langSpan.style.cursor = "not-allowed";
-                    }
-
-                    langDiv.appendChild(langSpan);
-
-                    /*langSpan.addEventListener("click", (event) => {
-                        if(opts.LANG === event.target.id) return;
-                        opts.LANG = event.target.id;
-                        saveOpts();
-                        window.location.href = "https://google.com";
-                    })*/
-                }
                 // Version
                 const credits = document.createElement("div");
-                credits.id = "kc-credits";
+                credits.id = "b7k-credits";
 
                 const versionSpan = document.createElement("span");
                 versionSpan.innerHTML = f("by_martine", GM_info.script.version);
@@ -391,12 +381,11 @@ const showUpdate = (version) => {
                 control.appendChild(toggleAutorefreshBtn);
                 control.appendChild(toggleNocacheBtn);
                 control.appendChild(sliderBlock);
-                control.appendChild(langDiv);
 
-                embed[0].parentNode.appendChild(control);
+                embed.parentNode.appendChild(control);
 
                 credits.appendChild(versionSpan);
-                embed[0].parentNode.appendChild(credits);
+                embed.parentNode.appendChild(credits);
                 console.log("UI Loaded");
             }
 
@@ -406,4 +395,9 @@ const showUpdate = (version) => {
         }, false);
     } else checkVersion()
     console.log("B7K overlay module loaded");
+    let over = document.getElementById("B7k-overlay");
+    if (over == null) {
+        dispatchEvent(new Event('load'));
+    }
+
 })();
