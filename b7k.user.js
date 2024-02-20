@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name Place B7K V2
 // @namespace https://github.com/notHaze/calques
-// @version 0.2
+// @version 0.3
 // @description Go détruire du grec
 // @author Martine
 // @match https://*/*
@@ -16,7 +16,7 @@
 const DEBUG = false;
 
 const UPDATE_URL = GM_info.script.updateURL;
-const OVERLAY_URL = "https://github.com/notHaze/calques/raw/main/overlaytest.png";
+const OVERLAY_URL = "https://github.com/notHaze/calques/raw/main/overlay.png";
 const VERSION_URL = "https://raw.githubusercontent.com/notHaze/calques/main/version.json";
 
 const allowedLangs = ['fr', 'en'];
