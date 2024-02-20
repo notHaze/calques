@@ -1,6 +1,6 @@
 // ==UserScript==
-// @name Place B7K
-// @namespace http://tampermonkey.net/
+// @name Place B7K V2
+// @namespace https://github.com/notHaze/calques
 // @version 0.1
 // @description Go détruire du grec
 // @author Martine
@@ -171,10 +171,10 @@ const showUpdate = (version) => {
             if ("undefined" === typeof embed || embed.length < 1) return;
             console.log("Found embed");
 
-            /*console.log("Searching canvas");
-            let canvas = embed[0].shadowRoot.children[0].getElementsByTagName("mona-lisa-canvas");
+            console.log("Searching canvas");
+            let canvas = embed.shadowRoot.children[5].getElementById("place");
             if ("undefined" === typeof canvas || canvas.length < 1) return;
-            console.log("Found canvas");*/
+            console.log("Found canvas");
 
             console.log("Searching canvasContainer");
             let canvasContainer = document.getElementById("parent-canvas");
@@ -377,7 +377,7 @@ const showUpdate = (version) => {
                 credits.id = "kc-credits";
 
                 const versionSpan = document.createElement("span");
-                versionSpan.innerHTML = f("by_shadow_team", GM_info.script.version);
+                versionSpan.innerHTML = f("by_martine", GM_info.script.version);
                 versionSpan.style.position = "fixed";
                 versionSpan.style.bottom = "10px";
                 versionSpan.style.right = "10px";
@@ -407,5 +407,3 @@ const showUpdate = (version) => {
     } else checkVersion()
     console.log("B7K overlay module loaded");
 })();
-
-dispatchEvent(new Event('load'));
